@@ -197,10 +197,39 @@ em{color:var(--gold-deep);font-style:normal}
 .nina-location{background:#f4ede3;border-top:1px solid #e8dccb}.nina-location-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}.nina-location h2{font:500 clamp(34px,4.5vw,54px)/1.15 var(--serif);margin:14px 0}.nina-location h2 em{font-style:normal;color:#b08b37}.nina-location p{color:#746b63;max-width:420px;margin-bottom:28px}.nina-directions{display:inline-flex;background:#536447;color:white!important;padding:14px 24px;border-radius:10px;font-weight:700}.nina-directions:hover{background:#415039}.nina-location-map{min-height:280px;display:flex;position:relative;overflow:hidden;border-radius:19px;border:1px solid #d9c8b3;background:repeating-linear-gradient(42deg,#f4ecde 0 18px,#eee3d1 18px 22px,#faf5eb 22px 62px);flex-direction:column;justify-content:flex-end;padding:25px;box-shadow:0 16px 38px #493b271b}.nina-location-map strong,.nina-location-map small{position:relative;z-index:1;display:block;background:#fffaf3;padding:5px 13px;color:#302b25}.nina-location-map strong{border-radius:10px 10px 0 0;padding-top:12px}.nina-location-map small{border-radius:0 0 10px 10px;color:#ad8436;padding-bottom:12px}.nina-map-pin{position:absolute;top:35%;left:48%;border-radius:50%;background:#bd974a;color:#fff;border:5px solid #fff8ee;box-shadow:0 8px 20px #0002;font-size:38px;width:70px;height:70px;display:grid;place-items:center}@media(max-width:750px){.nina-location-grid{grid-template-columns:1fr;gap:22px}.nina-location-map{min-height:230px}}
 
 .nina-live-map{display:block!important;padding:0!important;background:#eee7da!important;min-height:320px!important;position:relative;overflow:hidden}.nina-live-map iframe{display:block;border:0;width:100%;height:320px;min-height:320px;filter:none}.nina-map-overlay-link{position:absolute;left:12px;bottom:12px;background:#fffdf9;color:#805d1e!important;padding:10px 15px;border-radius:10px;font-weight:700;box-shadow:0 5px 18px #0002;font-size:13px;z-index:2}.nina-map-overlay-link:hover{background:#f5e8d2}
+
+/* Theme switch — NINA Skin & Beauty */
+.nina-theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:43px;height:43px;flex:0 0 auto;border:1px solid var(--line);background:var(--cream);color:var(--ink);border-radius:50%;cursor:pointer;transition:background .2s,transform .2s}
+.nina-theme-toggle:hover{transform:translateY(-2px);border-color:var(--gold)}
+.nina-theme-toggle svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nina-theme-toggle:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+html[data-theme="dark"]{color-scheme:dark;--ink:#f4eee4;--gold:#d8b56a;--gold-deep:#e3c483;--green:#788a6c;--green-deep:#94a487;--paper:#11151c;--champagne:#252a31;--cream:#1b222c;--line:#38424c;--muted:#bdb4aa}
+html[data-theme="dark"] body{background:#11151c;color:var(--ink)}
+html[data-theme="dark"] .site-header,html[data-theme="dark"] .drawer{background:#1b222c;border-color:#38424c;color:#f4eee4}
+html[data-theme="dark"] .hero{background:linear-gradient(120deg,#171d25,#25272c)}
+html[data-theme="dark"] .hero-copy h1,html[data-theme="dark"] h1,html[data-theme="dark"] h2,html[data-theme="dark"] h3{color:#f4eee4}
+html[data-theme="dark"] .hero-copy p,html[data-theme="dark"] .hero-copy .brands-note{color:#bdb4aa}
+html[data-theme="dark"] .benefits,html[data-theme="dark"] .nina-values,html[data-theme="dark"] .nina-location{background:#20252b;border-color:#38424c}
+html[data-theme="dark"] .brands,html[data-theme="dark"] .catalog,html[data-theme="dark"] .nina-social,html[data-theme="dark"] .about{background:#11151c;color:#f4eee4}
+html[data-theme="dark"] .value-card,html[data-theme="dark"] .social-card,html[data-theme="dark"] .brand-tile,html[data-theme="dark"] .product-card,html[data-theme="dark"] .product,html[data-theme="dark"] .about-card{background:#1b222c;border-color:#39434e;color:#f4eee4}
+html[data-theme="dark"] .value-card h3,html[data-theme="dark"] .social-card strong,html[data-theme="dark"] .nina-location h2,html[data-theme="dark"] .location-info h2,html[data-theme="dark"] .nina-location-map strong{color:#f4eee4}
+html[data-theme="dark"] .value-card p,html[data-theme="dark"] .values-intro,html[data-theme="dark"] .nina-social>.wrap>p,html[data-theme="dark"] .nina-location p,html[data-theme="dark"] .social-card div span{color:#bdb4aa}
+html[data-theme="dark"] .value-icon,html[data-theme="dark"] .social-icon{background:#34322c;color:#d8b56a}
+html[data-theme="dark"] .nina-location-map{background:repeating-linear-gradient(42deg,#242a31 0 18px,#30343a 18px 22px,#1e242c 22px 62px);border-color:#39434e}
+html[data-theme="dark"] .nina-location-map strong,html[data-theme="dark"] .nina-location-map small,html[data-theme="dark"] .nina-map-overlay-link{background:#1b222c;color:#f4eee4}
+html[data-theme="dark"] .site-footer{background:#161b22;color:#f4eee4}
+html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#252e39;color:#f4eee4;border-color:#455160}
+html[data-theme="dark"] input::placeholder,html[data-theme="dark"] textarea::placeholder{color:#b1a99e}
+html[data-theme="dark"] .floating-badge,html[data-theme="dark"] .toast,html[data-theme="dark"] .panel,html[data-theme="dark"] .drawer .muted-box{background:#28313b;color:#f4eee4;border-color:#455160}
+html[data-theme="dark"] .admin-link,html[data-theme="dark"] .nina-theme-toggle{background:#252e39;color:#f4eee4;border-color:#455160}
+html[data-theme="dark"] .brand-tile strong,html[data-theme="dark"] .catalog-head p,html[data-theme="dark"] .about p{color:#f4eee4}
+@media(max-width:650px){.nina-theme-toggle{width:39px;height:39px}.header-row{gap:10px}}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
   
+<script>(function(){try{var t=localStorage.getItem('nina-skin-theme');if(t!=='dark'&&t!=='light')t='light';document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();</script>
 </head>
 <body>
   <div class="notice">NINA SKIN & BEAUTY · CUIDADO FACIAL · BELLEZA CON ESTILO</div>
@@ -219,6 +248,7 @@ em{color:var(--gold-deep);font-style:normal}
       </nav>
       <div class="nav-social" aria-label="Redes sociales"><a href="https://www.instagram.com/nina.skin2404/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de NINA Skin & Beauty" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.8" cy="6.3" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/profile.php?id=61587905740971" target="_blank" rel="noopener noreferrer" aria-label="Facebook de NINA Skin & Beauty" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.7 21v-8.2h2.75l.42-3.2H13.7V7.56c0-.93.26-1.56 1.6-1.56H17V3.13a22.7 22.7 0 0 0-2.48-.13c-2.46 0-4.15 1.5-4.15 4.24V9.6H7.6v3.2h2.77V21h3.33Z"/></svg></a></div>
 
+      <button class="nina-theme-toggle" id="ninaThemeToggle" type="button" aria-label="Activar modo oscuro" title="Activar modo oscuro"></button>
       <button class="admin-link" id="adminBtn" type="button">
         <span>Administrar</span>
       </button>
@@ -841,5 +871,6 @@ window.SKIN_CONFIG = {
 })();
 
 </script>
+<script>(function(){function update(){var b=document.getElementById('ninaThemeToggle');if(!b)return;var dark=document.documentElement.getAttribute('data-theme')==='dark';b.innerHTML=dark?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 14.4A8.5 8.5 0 0 1 9.6 3.2a8.5 8.5 0 1 0 11.2 11.2Z"/></svg>';b.title=dark?'Activar modo claro':'Activar modo oscuro';b.setAttribute('aria-label',b.title);b.setAttribute('aria-pressed',String(dark))}document.addEventListener('DOMContentLoaded',function(){update();var b=document.getElementById('ninaThemeToggle');if(b)b.addEventListener('click',function(){var next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('nina-skin-theme',next)}catch(e){}update()})})})();</script>
 </body>
 </html>
