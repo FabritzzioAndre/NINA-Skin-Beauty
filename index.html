@@ -284,6 +284,35 @@ html[data-theme="light"] .hero-visual:before{background:radial-gradient(circle,#
 @media(max-width:850px){.hero-grid{grid-template-columns:1fr;gap:12px}.hero-visual{height:420px;min-height:420px}.hero-visual:before{width:min(82%,385px);top:4%}.hero .hero-card{min-height:320px}.hero .hero-logo{max-height:280px!important}.hero .badge-one{right:0!important}.hero .badge-two{bottom:10%!important}}
 @media(max-width:520px){.hero-visual{height:340px;min-height:340px}.hero .hero-card{min-height:260px}.hero .hero-logo{max-height:230px!important}.hero .floating-badge{padding:8px 11px!important;font-size:10px!important}}
 
+
+/* NINA hero scene v3 - cinematic golden botanical stage */
+.hero{background:linear-gradient(90deg,#0b1014 0%,#0f1114 38%,#201a16 100%)!important}
+.hero-grid{width:min(1390px,calc(100% - 80px));grid-template-columns:47% 53%;min-height:760px;gap:8px;padding:44px 0 65px}
+.hero-copy{position:relative;z-index:3;max-width:610px!important}
+.hero h1{font-size:clamp(53px,5.15vw,84px)!important;max-width:590px;line-height:1.1!important}
+.hero-copy>p{font-size:16px;max-width:545px}
+.hero-visual{height:660px;min-height:660px;position:relative;overflow:visible}
+.hero-visual:before{width:76%!important;max-width:510px!important;top:9%!important;left:51%!important;transform:translateX(-50%)!important;background:radial-gradient(circle at 50% 47%,#352820 0%,#211a17 58%,#141719 80%)!important;border:2px solid #d2a45c!important;box-shadow:0 0 11px #f4c579bb,0 0 55px #b17c3799,0 0 0 18px #d3a15e0e,inset 0 0 54px #ddb06126!important;z-index:0!important}
+.hero-visual:after{content:""!important;width:90%!important;left:6%!important;bottom:3%!important;height:118px!important;border-radius:50% / 40%!important;transform:perspective(200px) rotateX(12deg);background:linear-gradient(92deg,transparent,#c79b55ad 35%,#171413 40%,#3e3329 80%,#b4824566),repeating-linear-gradient(125deg,#0c1013 0 15px,#161a1d 15px 26px,#715633 27px,#0d1114 29px)!important;border:1px solid #bc8e50!important;box-shadow:0 22px 40px #000b,inset 0 8px 17px #000a!important;z-index:1!important}
+.hero .hero-card{position:relative;z-index:3!important;min-height:490px!important;display:flex;align-items:center;justify-content:center;max-width:82%!important;margin:auto;background:transparent!important}
+.hero .hero-logo{max-width:460px!important;max-height:290px!important;width:100%!important;object-fit:contain!important;filter:drop-shadow(0 5px 11px #dfa95275)!important}
+.hero .floating-badge{z-index:6!important;font-weight:600!important;padding:12px 23px!important;box-shadow:0 0 18px #f1bb6d44, inset 0 0 4px #c69a5155!important;border:1px solid #bd955c!important}
+.hero .badge-one{top:18%!important;right:0!important;left:auto!important}
+.hero .badge-two{bottom:18%!important;left:2%!important}
+.luxury-sparkles{z-index:2!important;background:radial-gradient(circle at 13% 23%,#ffd68a 0 1px,transparent 3px),radial-gradient(circle at 21% 57%,#ffd280 0 1px,transparent 3px),radial-gradient(circle at 75% 12%,#ffd280 0 1px,transparent 3px),radial-gradient(circle at 90% 71%,#ffd280 0 1px,transparent 3px),radial-gradient(circle at 67% 84%,#ffd280 0 1px,transparent 3px);filter:drop-shadow(0 0 7px #f0aa4e)}
+.luxury-foliage{z-index:2!important;overflow:visible!important}
+.luxury-foliage:before,.luxury-foliage:after{width:240px!important;height:490px!important;opacity:.85;background:
+radial-gradient(ellipse 36px 95px at 27% 14%,#a07c40 4%,#38382b 45%,transparent 60%),
+radial-gradient(ellipse 31px 102px at 68% 30%,#b18b4b 6%,#2d3528 46%,transparent 61%),
+radial-gradient(ellipse 30px 96px at 25% 56%,#a58449 3%,#283327 45%,transparent 62%),
+radial-gradient(ellipse 29px 89px at 76% 78%,#bc914c 3%,#323629 46%,transparent 62%)!important;filter:drop-shadow(0 0 17px #c3915640)!important}
+.luxury-foliage:before{left:-8%!important;top:1%!important;transform:rotate(-19deg)!important}
+.luxury-foliage:after{right:-5%!important;bottom:3%!important;transform:rotate(23deg)!important}
+.hero .hero-foot{border-top:0!important;padding-top:8px!important}
+html[data-theme="light"] .hero{background:linear-gradient(100deg,#f9f2e7,#e4d3bd)!important}
+@media(max-width:900px){.hero-grid{width:min(1160px,calc(100% - 42px));grid-template-columns:1fr;gap:0;min-height:0}.hero-visual{min-height:450px;height:450px}.hero .hero-card{min-height:350px!important;max-width:82%!important}.hero .hero-logo{max-height:250px!important}.hero-visual:after{height:70px!important}.hero .badge-one{top:11%!important}.hero .badge-two{bottom:15%!important}}
+@media(max-width:520px){.hero h1{font-size:clamp(42px,10.5vw,60px)!important}.hero-visual{min-height:340px;height:340px}.hero .hero-card{min-height:265px!important}.hero .hero-logo{max-height:190px!important}.hero .floating-badge{padding:8px 12px!important;font-size:10px!important}}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
