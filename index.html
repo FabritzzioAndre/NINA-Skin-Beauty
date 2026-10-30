@@ -321,6 +321,8 @@ html[data-theme="light"] .hero{background:linear-gradient(100deg,#f9f2e7,#e4d3bd
 .hero .hero-logo{max-width:570px!important;max-height:380px!important;width:100%!important;height:auto!important;object-fit:contain!important;background:transparent!important;mix-blend-mode:normal!important;filter:drop-shadow(0 3px 12px rgba(195,144,58,.18))!important}
 .hero .floating-badge,.luxury-sparkles,.luxury-foliage{display:none!important}
 @media(max-width:850px){.hero-visual{min-height:270px!important}.hero .hero-logo{max-height:260px!important}}
+
+.brand-logo-header{background:transparent!important;border-radius:0!important}html[data-theme="dark"] .nav a{color:#e7dfd4!important}html[data-theme="dark"] .nav a:hover{color:#d8b56a!important}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
@@ -998,5 +1000,6 @@ window.SKIN_CONFIG = {
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',makeTransparentLogo);else makeTransparentLogo();
 })();
 </script>
+<script>(function(){function transparentHeader(){var el=document.querySelector('.brand-logo-header');if(!el)return;function convert(){try{var c=document.createElement('canvas');c.width=el.naturalWidth;c.height=el.naturalHeight;var x=c.getContext('2d',{willReadFrequently:true});x.drawImage(el,0,0);var p=x.getImageData(0,0,c.width,c.height),d=p.data;for(var i=0;i<d.length;i+=4){var min=Math.min(d[i],d[i+1],d[i+2]),max=Math.max(d[i],d[i+1],d[i+2]);if(min>224&&max-min<33){d[i+3]=0}else if(min>190&&max-min<35){d[i+3]=Math.round(255*(224-min)/34)}}x.putImageData(p,0,0);el.src=c.toDataURL('image/png')}catch(e){}}if(el.complete&&el.naturalWidth)convert();else el.addEventListener('load',convert,{once:true})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',transparentHeader);else transparentHeader()})();</script>
 </body>
 </html>
