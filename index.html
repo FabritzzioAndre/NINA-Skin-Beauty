@@ -331,6 +331,26 @@ html[data-theme="light"] .hero{background:linear-gradient(100deg,#f9f2e7,#e4d3bd
 .about-card{background:transparent!important;border-color:var(--line)!important;box-shadow:none!important}
 .about-logo{background:transparent!important;border-radius:0!important;object-fit:contain}
 html[data-theme="dark"] .about-card{background:transparent!important;border-color:#38424c!important}
+
+/* Administration: accessible contrast in both themes */
+.drawer{color:#2b2927}
+.drawer h2,.drawer h3,.drawer label,.drawer b{color:#2b2927}
+.drawer p,.drawer small,.drawer .tip{color:#6a6058}
+.drawer .field input,.drawer .field textarea,.drawer .field select{background:#fffdf9;color:#2b2927;border:1px solid #cbbda9}
+.drawer .secondary{background:#f2ece3;color:#302a25;border:1px solid #bdae99;min-height:40px;padding:9px 16px;border-radius:9px;font-weight:700}
+.drawer .secondary:hover{background:#e9dece}
+.drawer hr{border:0;border-top:1px solid #d7cbb9;margin:22px 0}
+html[data-theme="dark"] .drawer{background:#1b222c!important;color:#f4eee4!important}
+html[data-theme="dark"] .drawer h2,html[data-theme="dark"] .drawer h3,html[data-theme="dark"] .drawer label,html[data-theme="dark"] .drawer b{color:#f4eee4!important}
+html[data-theme="dark"] .drawer p,html[data-theme="dark"] .drawer small,html[data-theme="dark"] .drawer .tip{color:#c3bbae!important}
+html[data-theme="dark"] .drawer .field input,html[data-theme="dark"] .drawer .field textarea,html[data-theme="dark"] .drawer .field select{background:#293340!important;color:#f8f3ed!important;border:1px solid #657280!important}
+html[data-theme="dark"] .drawer .field input:focus,html[data-theme="dark"] .drawer .field textarea:focus{outline:2px solid #d8b56a;outline-offset:1px}
+html[data-theme="dark"] .drawer .secondary{background:#33404d!important;color:#fff8ec!important;border:1px solid #788795!important}
+html[data-theme="dark"] .drawer .secondary:hover{background:#455568!important}
+html[data-theme="dark"] .drawer hr{border-color:#56616d!important}
+html[data-theme="dark"] .drawer .admin-item{border-color:#4c5864!important;color:#f4eee4}
+html[data-theme="dark"] .drawer .admin-item button{background:#344355;color:#f4eee4;border:1px solid #627184;border-radius:8px}
+html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!important}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
