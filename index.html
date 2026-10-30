@@ -159,6 +159,27 @@ em{color:var(--gold-deep);font-style:normal}
   .footer-logo{height:48px}
 }
 
+/* NINA: beneficios para clientes y presencia en redes */
+.nina-values{padding:68px 0 74px;background:#f4ede3;text-align:center}
+.nina-values .kicker,.nina-social .kicker{color:#a88337;letter-spacing:.19em}
+.nina-values h2,.nina-social h2{font:500 clamp(32px,4vw,52px)/1.17 var(--serif);margin:15px 0;color:#292725}
+.nina-values h2 em,.nina-social h2 em{font-style:normal;color:#b08b37}
+.values-intro,.nina-social> .wrap > p{font-size:15px;color:#71685e;margin:0 auto 32px;max-width:580px}
+.nina-benefits-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:0;font-weight:400}
+.value-card{background:#fffdf9;border:1px solid #e9dfd1;border-radius:18px;padding:28px 20px 25px;box-shadow:0 9px 28px rgba(69,47,27,.05);transition:transform .2s ease,box-shadow .2s ease}
+.value-card:hover{transform:translateY(-4px);box-shadow:0 17px 32px rgba(69,47,27,.1)}
+.value-icon{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 13px;border-radius:50%;background:#f5e8d3;color:#a78031;font-size:28px;font-family:Georgia,serif;line-height:1}
+.value-card h3{font:700 16px var(--sans);margin:0 0 8px;color:#302b25}
+.value-card p{font-size:13px;line-height:1.7;color:#786f65;margin:0}
+.nina-social{text-align:center;background:#fcfaf7}
+.social-grid{max-width:780px;margin:30px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.social-card{display:flex;align-items:center;gap:15px;background:#fff;border:1px solid #e9dfd1;border-radius:16px;padding:22px;text-align:left}
+.social-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#f5e8d3;color:#a8802d;font:bold 29px Georgia,serif;flex-shrink:0}
+.social-card>div{display:grid;gap:2px;flex:1}.social-card strong{color:#292725;font-size:16px}.social-card div span{font-size:12px;color:#756b61}
+.social-soon{font-size:11px;color:#966e24;background:#f6ecdb;border-radius:100px;padding:5px 9px;white-space:nowrap}
+@media(max-width:850px){.nina-benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.social-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.nina-benefits-grid{grid-template-columns:1fr}.nina-values{padding:50px 0}.social-card{flex-wrap:wrap}}
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
   
@@ -213,12 +234,17 @@ em{color:var(--gold-deep);font-style:normal}
       </div>
     </section>
 
-    <section class="benefits">
-      <div class="wrap benefits-grid">
-        <span>✦ Catálogo elegante</span>
-        <span>✦ Marcas filtrables</span>
-        <span>✦ Panel privado para administrar</span>
-        <span>✦ Diseño responsive</span>
+    <section class="benefits nina-values" aria-labelledby="values-title">
+      <div class="wrap">
+        <div class="kicker">BELLEZA Y CUIDADO PERSONAL</div>
+        <h2 id="values-title">Tu piel merece <em>lo mejor.</em></h2>
+        <p class="values-intro">Descubre productos seleccionados para acompañar tu rutina de skincare.</p>
+        <div class="benefits-grid nina-benefits-grid">
+          <article class="value-card"><span class="value-icon" aria-hidden="true">✦</span><h3>Belleza coreana</h3><p>Descubre marcas de skincare reconocidas.</p></article>
+          <article class="value-card"><span class="value-icon" aria-hidden="true">♡</span><h3>Cuidado personal</h3><p>Dedica un momento especial a tu piel.</p></article>
+          <article class="value-card"><span class="value-icon" aria-hidden="true">♧</span><h3>Tus favoritos</h3><p>Explora productos para tu rutina diaria.</p></article>
+          <article class="value-card"><span class="value-icon" aria-hidden="true">✉</span><h3>Atención cercana</h3><p>Estamos para ayudarte a elegir.</p></article>
+        </div>
       </div>
     </section>
 
@@ -283,6 +309,18 @@ em{color:var(--gold-deep);font-style:normal}
       </div>
     </section>
   </main>
+
+  <section class="nina-social section" id="redes" aria-labelledby="social-title">
+    <div class="wrap">
+      <div class="kicker">CONÉCTATE CON NINA</div>
+      <h2 id="social-title">Síguenos y descubre <em>más belleza.</em></h2>
+      <p>Muy pronto podrás encontrarnos también en nuestras redes sociales.</p>
+      <div class="social-grid">
+        <div class="social-card"><span class="social-icon" aria-hidden="true">◎</span><div><strong>Instagram</strong><span>Rutinas, novedades e inspiración</span></div><span class="social-soon">Próximamente</span></div>
+        <div class="social-card"><span class="social-icon" aria-hidden="true">f</span><div><strong>Facebook</strong><span>Productos y noticias de nuestra tienda</span></div><span class="social-soon">Próximamente</span></div>
+      </div>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="wrap footer-row">
