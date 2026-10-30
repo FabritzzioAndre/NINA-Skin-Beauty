@@ -353,6 +353,8 @@ html[data-theme="dark"] .drawer .admin-item button{background:#344355;color:#f4e
 html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!important}
 
 @media(max-width:700px){.hero .hero-ambient{display:block!important;opacity:1!important;z-index:0!important}.hero .hero-grid{position:relative;z-index:1}}
+
+.hero .hero-actions .primary:after{content:none!important}.hero .hero-actions a{display:inline-flex!important;align-items:center;justify-content:center;gap:10px}.hero .hero-actions .btn-icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:19px;height:19px}.hero .hero-actions .btn-icon svg{display:block;width:100%;height:100%}@media(max-width:520px){.hero .hero-actions .btn-icon{width:16px;height:16px}.hero .hero-actions a{gap:7px}}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
@@ -393,8 +395,8 @@ html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!i
             Descubre una selección de productos de skincare para acompañar cada paso de tu rutina. Explora nuestras marcas favoritas y encuentra ese cuidado especial que tu piel merece.
           </p>
           <div class="hero-actions">
-            <a href="#catalogo" class="primary">Ver catálogo</a>
-            <a href="#marcas" class="secondary-link">Explorar marcas ↗</a>
+            <a href="#catalogo" class="primary">Ver catálogo <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V7a5 5 0 0 1 10 0v2"/><path d="M5 9h14l-1 10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 9Z"/></svg></span></a>
+            <a href="#marcas" class="secondary-link">Explorar marcas <span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg></span></a>
           </div>
           <div class="hero-foot">Mixsoon · Anua · Beauty of Joseon · COSRX y más</div>
         </div>
