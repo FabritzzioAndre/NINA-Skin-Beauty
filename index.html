@@ -963,10 +963,12 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
       if(result.error)throw result.error;
       const productId=existing?.id||result.data?.id;
       if(!productId)throw new Error('No se pudo identificar el producto creado.');
-      const {error:invError}=await db.from('inventory_items').upsert({
-        product_id:productId,purchase_cost:costs[0],freight_cost:costs[1],packaging_cost:costs[2],min_stock:minStock
-      },{onConflict:'product_id'});
-      if(invError)throw new Error('Producto guardado, pero el inventario no se actualizó: '+invError.message);
+      const inventoryData={purchase_cost:costs[0],freight_cost:costs[1],packaging_cost:costs[2],min_stock:minStock};
+      const hasInventory=!!inventory[productId];
+      const invResult=hasInventory
+        ? await db.from('inventory_items').update(inventoryData).eq('product_id',productId)
+        : await db.from('inventory_items').insert({product_id:productId,...inventoryData});
+      if(invResult.error)throw new Error('Producto guardado, pero el inventario no se actualizó: '+invResult.error.message);
       if(!existing){
         const start=Number($('initialStock').value);
         if(!Number.isSafeInteger(start)||start<0)throw new Error('El stock inicial no es válido.');
