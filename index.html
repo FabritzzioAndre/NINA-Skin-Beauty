@@ -364,6 +364,33 @@ html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!i
 .footer-logo{background:none!important;border-radius:0!important;filter:none!important;mix-blend-mode:normal!important;object-fit:contain!important}
 
 .site-footer .footer-logo{background:transparent!important;filter:none!important;mix-blend-mode:normal!important;border-radius:0!important}
+
+/* NINA private management workspace */
+.overlay:has(#ninaAdminRoot) .drawer{width:min(1180px,100%);padding:32px 34px}
+#ninaAdminRoot{color:#292725}
+.nina-admin-heading{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.nina-admin-heading h2{font-size:clamp(27px,3vw,39px);margin:2px 0}
+.nina-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0;border-top:1px solid #ebe0d3;border-bottom:1px solid #ebe0d3;margin:14px 0 22px}
+.nina-tabs button{border:1px solid #ddd0bb;padding:11px 15px;border-radius:11px;background:#fff;color:#53473a;cursor:pointer;font-weight:650}
+.nina-tabs button.active{background:#34433b;color:white;border-color:#34433b}
+.nina-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.nina-stat{background:#f4eee5;border-radius:14px;padding:16px}
+.nina-stat small{display:block;color:#6c5d4c;margin-bottom:8px}
+.nina-stat strong{font-size:22px;color:#2d3e34}
+.nina-admin-card{background:#fff;border:1px solid #e9dfd2;border-radius:16px;padding:18px;margin:14px 0}
+.nina-admin-card h3{margin:0 0 12px;font-size:21px}
+.nina-admin-card .field input,.nina-admin-card .field textarea{box-sizing:border-box}
+.nina-admin-card input[type=checkbox]{width:auto;margin-right:7px}
+.nina-admin-hint{font-size:12px;color:#6a635b;margin:8px 0 14px}
+.nina-table-wrap{overflow-x:auto}
+.nina-admin-table{border-collapse:collapse;width:100%;font-size:13px;min-width:650px}
+.nina-admin-table th,.nina-admin-table td{padding:12px 8px;border-bottom:1px solid #eee5d8;text-align:left;vertical-align:middle}
+.nina-admin-table th{color:#776957}
+.nina-admin-table button{border:1px solid #dfd2c3;border-radius:8px;background:#fff;padding:7px 10px;margin:2px;cursor:pointer}
+.nina-status{font-size:12px;border-radius:999px;background:#e5f1e8;color:#295d36;padding:4px 8px;display:inline-block}
+.nina-status.off{background:#f7ebd9;color:#79582b}
+.nina-warning{background:#fff1d9;color:#805014;padding:13px;border-radius:10px}
+@media(max-width:740px){.overlay:has(#ninaAdminRoot) .drawer{padding:55px 16px 20px}.nina-stats{grid-template-columns:1fr}.nina-admin-card{padding:13px}.nina-tabs button{flex:1}}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
@@ -573,6 +600,9 @@ window.SKIN_CONFIG = {
   let sort = 'new';
   let admin = null;
   let edit = null;
+  let inventory = {};
+  let movements = [];
+  let adminSection = 'products';
 
   const $ = (id) => document.getElementById(id);
   const esc = (text) => String(text ?? '').replace(/[&<>"']/g, (char) => ({
@@ -608,7 +638,7 @@ window.SKIN_CONFIG = {
   }
 
   function allBrands() {
-    return [...new Set(products.map((product) => product.brand).filter(Boolean))]
+    return [...new Set(products.filter(p=>p.active!==false).map((product) => product.brand).filter(Boolean))]
       .sort((a, b) => a.localeCompare(b, 'es'));
   }
 
@@ -628,6 +658,7 @@ window.SKIN_CONFIG = {
       .join('');
 
     const found = products.filter((product) => {
+      if(product.active===false)return false;
       const matchesBrand = brand === 'Todas' || brand === product.brand;
       const matchesText = normalize(product.name + ' ' + product.brand + ' ' + product.description)
         .includes(normalize(search));
@@ -746,67 +777,85 @@ window.SKIN_CONFIG = {
     return !error && !!data;
   }
 
-  function form(product) {
-    return `
-      <form id="productForm">
-        <div class="pair">
-          <div class="field">
-            <label>Marca *</label>
-            <input required maxlength="80" id="brand" value="${esc(product?.brand || '')}" placeholder="Mixsoon" list="brandList">
-            <datalist id="brandList">${allBrands().map((item) => `<option value="${esc(item)}">`).join('')}</datalist>
-          </div>
-          <div class="field">
-            <label>Nombre *</label>
-            <input required maxlength="140" id="name" value="${esc(product?.name || '')}" placeholder="Bean Essence">
-          </div>
-        </div>
-        <div class="field">
-          <label>Descripción *</label>
-          <textarea id="description" required maxlength="3000" placeholder="Beneficios, tipo de piel, modo de uso...">${esc(product?.description || '')}</textarea>
-        </div>
-        <div class="pair">
-          <div class="field">
-            <label>Precio (S/) *</label>
-            <input id="price" type="number" min="0" max="999999" step="0.01" required value="${product?.price ?? ''}">
-          </div>
-          <div class="field">
-            <label>Imagen JPG / PNG / WebP</label>
-            <input id="file" type="file" accept="image/jpeg,image/png,image/webp">
-            <small>Máximo 5 MB</small>
-          </div>
-        </div>
-        ${product?.image_url ? '<div class="tip">Si no seleccionas otra fotografía, se conserva la imagen actual.</div>' : ''}
-        <button class="action" id="saveBtn">${product ? 'Guardar cambios' : 'Publicar producto'}</button>
-        ${product ? '<button type="button" class="secondary" id="cancelEdit">Cancelar</button>' : ''}
-      </form>`;
-  }
+  function ninaProductForm(product){
+const inv=inventory[product?.id]||{};
+return `<form id="productForm">
+  <div class="pair">
+    <div class="field"><label>Marca *</label><input id="brand" required maxlength="80" value="${esc(product?.brand||'')}" list="brandList"><datalist id="brandList">${allBrands().map(v=>`<option value="${esc(v)}">`).join('')}</datalist></div>
+    <div class="field"><label>Nombre *</label><input id="name" required maxlength="140" value="${esc(product?.name||'')}"></div>
+  </div>
+  <div class="field"><label>Descripción *</label><textarea id="description" maxlength="3000" required>${esc(product?.description||'')}</textarea></div>
+  <div class="pair">
+    <div class="field"><label>Precio de venta S/ *</label><input id="price" type="number" step="0.01" min="0" required value="${product?.price??''}"></div>
+    <div class="field"><label>Imagen JPG, PNG o WebP</label><input id="file" type="file" accept="image/jpeg,image/png,image/webp"><small>Máximo 5 MB</small></div>
+  </div>
+  <div class="nina-admin-card">
+    <h3>Costos privados e inventario</h3>
+    <p class="nina-admin-hint">Estos valores jamás aparecen en el catálogo público. El flete y embalaje corresponden a una unidad del producto.</p>
+    <div class="pair">
+      <div class="field"><label>Costo de compra unitario S/</label><input type="number" id="purchaseCost" min="0" step="0.01" required value="${inv.purchase_cost??0}"></div>
+      <div class="field"><label>Flete unitario S/</label><input type="number" id="freightCost" min="0" step="0.01" required value="${inv.freight_cost??0}"></div>
+      <div class="field"><label>Embalaje unitario S/</label><input type="number" id="packagingCost" min="0" step="0.01" required value="${inv.packaging_cost??0}"></div>
+      <div class="field"><label>Alerta de stock mínimo</label><input type="number" id="minStock" min="0" step="1" required value="${inv.min_stock??2}"></div>
+      ${product?'':`<div class="field"><label>Stock inicial</label><input type="number" id="initialStock" min="0" step="1" required value="0"></div>`}
+    </div>
+    ${product?`<p class="nina-admin-hint">Stock actual: <b>${inv.stock_qty??'Sin configurar'}</b>. Para corregirlo utiliza la pestaña Inventario, que registra cada movimiento.</p>`:''}
+  </div>
+  <div class="field"><label><input id="active" type="checkbox" ${product?.active===false?'':'checked'}> Mostrar producto en el catálogo</label></div>
+  <button class="action" id="saveBtn">${product?'Guardar cambios':'Crear producto'}</button>
+  ${product?'<button type="button" class="secondary" id="cancelEdit">Cancelar edición</button>':''}
+</form>`;
+}
 
-  function panel() {
-    return `
-      ${top('Agrega marcas, descripciones, fotos y precios sin modificar código.')}
-      <button class="secondary" id="logout">Cerrar sesión</button>
-      <hr>
-      <h3>${edit ? 'Editar producto' : 'Nuevo producto'}</h3>
-      ${form(products.find((product) => String(product.id) === String(edit)))}
-      <hr>
-      <h3>Productos (${products.length})</h3>
-      ${products.map((product) => `
-        <div class="admin-item">
-          ${photo(product)}
-          <div>
-            <b>${esc(product.name)}</b>
-            <small>${esc(product.brand)} · ${money(product.price)}</small>
-          </div>
-          <button data-edit="${esc(product.id)}">Editar</button>
-          <button data-delete="${esc(product.id)}">Borrar</button>
-        </div>`).join('') || '<p>Aún no hay productos.</p>'}
-    `;
-  }
+  function form(product){ return ninaProductForm(product); }
 
-  async function getAll() {
+    function ninaPanel(){
+const n=products.length,configured=Object.keys(inventory).length,low=products.filter(p=>inventory[p.id]&&inventory[p.id].stock_qty<=inventory[p.id].min_stock).length, editing=products.find(p=>String(p.id)===String(edit));
+return `<div id="ninaAdminRoot">
+ <div class="nina-admin-heading"><div><small style="letter-spacing:2px;color:#a5874c">NINA SKIN & BEAUTY</small><h2>Gestión comercial</h2><p class="nina-admin-hint">Productos, costos e inventario privado</p></div><button class="secondary" id="logout">Cerrar sesión</button></div>
+ <div class="nina-tabs"><button type="button" data-section="products" class="${adminSection==='products'?'active':''}">Productos</button><button type="button" data-section="stock" class="${adminSection==='stock'?'active':''}">Inventario</button><button type="button" data-section="reports" class="${adminSection==='reports'?'active':''}">Resumen</button></div>
+ <div class="nina-stats"><div class="nina-stat"><small>Productos</small><strong>${n}</strong></div><div class="nina-stat"><small>Con inventario configurado</small><strong>${configured}</strong></div><div class="nina-stat"><small>Stock bajo</small><strong>${low}</strong></div></div>
+ ${adminSection==='products'?`
+   <div class="nina-admin-card"><h3>${editing?'Editar producto':'Registrar nuevo producto'}</h3>${ninaProductForm(editing)}</div>
+   <div class="nina-admin-card"><h3>Productos registrados (${n})</h3><div class="nina-table-wrap"><table class="nina-admin-table"><thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Catálogo</th><th>Acciones</th></tr></thead><tbody>${products.map(p=>`<tr><td><b>${esc(p.name)}</b><br><small>${esc(p.brand)}</small></td><td>${money(p.price)}</td><td>${inventory[p.id]?.stock_qty??'—'}</td><td><span class="nina-status ${p.active===false?'off':''}">${p.active===false?'Oculto':'Visible'}</span></td><td><button type="button" data-edit="${esc(p.id)}">Editar</button><button type="button" data-delete="${esc(p.id)}">Eliminar</button></td></tr>`).join('')}</tbody></table></div></div>`:
+ adminSection==='stock'?`
+   <div class="nina-admin-card"><h3>Entrada o salida de inventario</h3><p class="nina-admin-hint">Cada movimiento queda registrado. Una salida no puede dejar el stock negativo.</p>
+    <form id="stockForm"><div class="field"><label>Producto</label><select id="stockProduct" required style="width:100%;padding:12px;border:1px solid #ddd4c7;border-radius:10px"><option value="">Seleccionar...</option>${products.map(p=>`<option value="${esc(p.id)}">${esc(p.brand)} · ${esc(p.name)} (${inventory[p.id]?.stock_qty??'Sin stock registrado'})</option>`).join('')}</select></div>
+    <div class="pair"><div class="field"><label>Tipo</label><select id="stockDirection" style="width:100%;padding:12px;border:1px solid #ddd4c7;border-radius:10px"><option value="in">Entrada (+)</option><option value="out">Salida (-)</option></select></div><div class="field"><label>Cantidad</label><input id="stockQty" type="number" required min="1" step="1" value="1"></div></div>
+    <div class="field"><label>Motivo</label><input id="stockReason" required minlength="3" maxlength="240" placeholder="Compra a proveedor, ajuste, merma..."></div>
+    <button class="action" id="stockBtn">Registrar movimiento</button></form></div>
+    <div class="nina-admin-card"><h3>Movimientos recientes</h3><div class="nina-table-wrap"><table class="nina-admin-table"><thead><tr><th>Fecha</th><th>Producto</th><th>Cambio</th><th>Stock final</th><th>Motivo</th></tr></thead><tbody>${movements.map(m=>`<tr><td>${esc(new Date(m.created_at).toLocaleString('es-PE'))}</td><td>${esc(products.find(p=>p.id===m.product_id)?.name||'Producto')}</td><td>${m.quantity_change>0?'+':''}${m.quantity_change}</td><td>${m.resulting_qty}</td><td>${esc(m.reason)}</td></tr>`).join('')||'<tr><td colspan="5">Todavía no hay movimientos.</td></tr>'}</tbody></table></div></div>`:
+ `<div class="nina-admin-card"><h3>Estado inicial del inventario</h3><p>Productos publicados: <b>${products.filter(p=>p.active!==false).length}</b></p><p>Productos con stock bajo: <b>${low}</b></p><p class="nina-warning">Esta versión todavía no registra ventas ni emite comprobantes SUNAT. Es el primer módulo de gestión comercial.</p></div>`}
+</div>`;
+}
+
+  function panel(){return ninaPanel();}
+
+  function ninaLoadInventory(){
+return Promise.all([
+db.from('inventory_items').select('*'),
+db.from('stock_movements').select('*').order('created_at',{ascending:false}).limit(100)
+]).then(([i,m])=>{if(i.error)throw i.error;if(m.error)throw m.error;inventory=Object.fromEntries((i.data||[]).map(x=>[x.product_id,x]));movements=m.data||[];});
+}
+
+  function ninaStockSubmit(event){
+event.preventDefault();
+const btn=$('stockBtn'),id=$('stockProduct').value,q=Number($('stockQty').value),reason=$('stockReason').value.trim();
+if(!id||!Number.isSafeInteger(q)||q<=0||reason.length<3){toast('Revisa el producto, cantidad y motivo.');return;}
+btn.disabled=true;btn.textContent='Registrando...';
+(async()=>{try{
+const delta=$('stockDirection').value==='out'?-q:q;
+const {error}=await db.rpc('adjust_nina_stock',{p_product_id:id,p_change:delta,p_reason:reason});
+if(error)throw error;
+await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
+}catch(e){toast('No se pudo modificar stock: '+e.message);btn.disabled=false;btn.textContent='Registrar movimiento';}})();
+}
+
+    async function getAll() {
     const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     products = data || [];
+    await ninaLoadInventory();
   }
 
   async function openAdmin() {
@@ -857,6 +906,7 @@ window.SKIN_CONFIG = {
       return;
     }
 
+    if (event.target.id === 'stockForm') { ninaStockSubmit(event); return; }
     if (event.target.id !== 'productForm') return;
 
     event.preventDefault();
@@ -896,18 +946,35 @@ window.SKIN_CONFIG = {
         price: Number($('price').value),
         image_url: imageUrl,
         image_path: imagePath,
-        active: true
+        active: $('active').checked
       };
 
       if (!payload.brand || !payload.name || !payload.description || !Number.isFinite(payload.price) || payload.price < 0) {
         throw new Error('Completa todos los campos obligatorios.');
       }
 
+      const costFields = ['purchaseCost','freightCost','packagingCost'];
+      const costs = costFields.map(id=>Number($(id).value));
+      const minStock = Number($('minStock').value);
+      if(costs.some(v=>!Number.isFinite(v)||v<0)||!Number.isSafeInteger(minStock)||minStock<0)throw new Error('Revisa costos y stock mínimo.');
       const result = existing
         ? await db.from('products').update(payload).eq('id', existing.id)
-        : await db.from('products').insert(payload);
-
-      if (result.error) throw result.error;
+        : await db.from('products').insert(payload).select('id').single();
+      if(result.error)throw result.error;
+      const productId=existing?.id||result.data?.id;
+      if(!productId)throw new Error('No se pudo identificar el producto creado.');
+      const {error:invError}=await db.from('inventory_items').upsert({
+        product_id:productId,purchase_cost:costs[0],freight_cost:costs[1],packaging_cost:costs[2],min_stock:minStock
+      },{onConflict:'product_id'});
+      if(invError)throw new Error('Producto guardado, pero el inventario no se actualizó: '+invError.message);
+      if(!existing){
+        const start=Number($('initialStock').value);
+        if(!Number.isSafeInteger(start)||start<0)throw new Error('El stock inicial no es válido.');
+        if(start>0){
+          const {error:stockError}=await db.rpc('adjust_nina_stock',{p_product_id:productId,p_change:start,p_reason:'Inventario inicial'});
+          if(stockError)throw new Error('Producto guardado, pero el stock inicial no se registró: '+stockError.message);
+        }
+      }
 
       edit = null;
       await getAll();
@@ -931,6 +998,8 @@ window.SKIN_CONFIG = {
       return;
     }
 
+    const tab=event.target.closest('[data-section]');
+    if(tab){adminSection=tab.dataset.section;edit=null;open(panel());return;}
     if (event.target.id === 'cancelEdit') {
       edit = null;
       open(panel());
