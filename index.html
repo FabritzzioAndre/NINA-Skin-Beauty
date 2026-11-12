@@ -429,6 +429,18 @@ html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!i
 .nina-dashboard-muted{font-size:12px;color:#897f70;line-height:1.5}
 @media(max-width:1100px){.nina-dashboard-grid{grid-template-columns:210px minmax(0,1fr)}.nina-admin-columns{grid-template-columns:1fr}.nina-dashboard-sidebar{padding:20px 12px}}
 @media(max-width:740px){.nina-dashboard-grid{display:block}.nina-dashboard-sidebar{position:relative;height:auto;padding:15px}.nina-dashboard-logo{text-align:left;font-size:25px;margin-bottom:15px}.nina-dashboard-menu{display:flex;overflow-x:auto;gap:5px;padding-bottom:7px}.nina-dashboard-menu button{font-size:12px;padding:10px;white-space:nowrap}.nina-dashboard-exit,.nina-private-pill{display:none}.nina-dashboard-main{padding:22px 15px 50px}.overlay.nina-full-admin .close{top:11px;right:11px}#ninaAdminRoot .nina-admin-card{padding:15px}}
+
+.nina-freight-area{padding:16px;background:#fffaf1;border:1px solid #e9d7b8;border-radius:14px;margin:12px 0 18px}
+.nina-freight-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.nina-freight-heading h4{margin:0;color:#3c3934;font-family:var(--serif);font-size:21px}
+.nina-freight-row{padding:14px 12px;background:#fff;border:1px solid #e8dfd0;border-radius:12px;margin:12px 0}
+.nina-freight-row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;color:#806743}
+.nina-freight-row-head button{background:#fff3e8;color:#8b4c31;border:1px solid #edcebb;border-radius:8px;padding:6px 10px;cursor:pointer}
+.nina-freight-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.nina-freight-inputs .field{margin:0}
+.nina-freight-total{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:13px;border-radius:10px;background:#f3e8d5;color:#5a462a}
+.nina-freight-total strong{font-size:19px}
+@media(max-width:540px){.nina-freight-inputs{grid-template-columns:1fr}}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
@@ -643,6 +655,8 @@ window.SKIN_CONFIG = {
   let adminSection = 'products';
   let galleryDraft = [];
   let galleryEditKey = null;
+  let freightDraft = [];
+  let freightEditKey = null;
 
   const $ = (id) => document.getElementById(id);
   const esc = (text) => String(text ?? '').replace(/[&<>"']/g, (char) => ({
@@ -857,8 +871,58 @@ window.SKIN_CONFIG = {
     return !error && !!data;
   }
 
+
+  function resetFreightDraft(product){
+    const inv=inventory[product?.id]||{};
+    freightDraft=Array.isArray(inv.freight_legs)?inv.freight_legs.filter(x=>x&&typeof x==='object').slice(0,20).map(x=>({
+      origin:String(x.origin||''), destination:String(x.destination||''), carrier:String(x.carrier||''),
+      total:Number(x.total)||0, units:Math.max(1,Math.trunc(Number(x.units)||1))
+    })):[];
+    if(!freightDraft.length&&Number(inv.freight_cost)>0){
+      freightDraft=[{origin:'Flete anterior',destination:'Tienda NINA',carrier:'Sin especificar',total:Number(inv.freight_cost),units:1}];
+    }
+    freightEditKey=product?.id||'new';
+  }
+  function freightUnitTotal(){
+    return Math.round(freightDraft.reduce((sum,x)=>sum+(Number(x.total)||0)/Math.max(1,Number(x.units)||1),0)*100)/100;
+  }
+  function freightFieldsMarkup(){
+    return freightDraft.map((item,i)=>`<div class="nina-freight-row" data-freight-index="${i}">
+      <div class="nina-freight-row-head"><strong>Flete ${i+1}</strong><button type="button" data-freight-remove="${i}">Quitar flete</button></div>
+      <div class="nina-freight-inputs">
+        <div class="field"><label>Origen *</label><input required maxlength="120" data-freight-field="origin" data-freight-i="${i}" value="${esc(item.origin)}" placeholder="Lima"></div>
+        <div class="field"><label>Destino *</label><input required maxlength="120" data-freight-field="destination" data-freight-i="${i}" value="${esc(item.destination)}" placeholder="Tarapoto"></div>
+        <div class="field"><label>Agencia o transportista *</label><input required maxlength="120" data-freight-field="carrier" data-freight-i="${i}" value="${esc(item.carrier)}" placeholder="Marvisur, Shalom..."></div>
+        <div class="field"><label>Costo total S/ *</label><input type="number" min="0" max="99999999" step="0.01" required data-freight-field="total" data-freight-i="${i}" value="${item.total}"></div>
+        <div class="field"><label>Unidades entre las que se reparte *</label><input type="number" min="1" max="999999" step="1" required data-freight-field="units" data-freight-i="${i}" value="${item.units}"></div>
+      </div>
+      <p class="nina-admin-hint">A este producto le corresponde ${money((Number(item.total)||0)/Math.max(1,Number(item.units)||1))} por unidad.</p>
+    </div>`).join('')||'<p class="nina-admin-hint">Sin fletes todavía. Presiona «+ Agregar flete» para indicar sus datos.</p>';
+  }
+  function updateFreightTotals(){
+    const field=$('freightCost'),total=$('freightUnitSum'),result=$('ninaCostEstimate');
+    const v=freightUnitTotal();
+    if(field)field.value=v.toFixed(2);
+    if(total)total.textContent=money(v);
+    if(result)result.textContent=money((Number($('purchaseCost')?.value)||0)+v+(Number($('packagingCost')?.value)||0));
+  }
+  function drawFreights(){
+    const list=$('ninaFreightList');if(list)list.innerHTML=freightFieldsMarkup();
+    updateFreightTotals();
+  }
+  function readFreightField(target){
+    const i=Number(target.dataset.freightI),key=target.dataset.freightField;
+    if(!freightDraft[i]||!['origin','destination','carrier','total','units'].includes(key))return;
+    freightDraft[i][key]=['total','units'].includes(key)?Number(target.value):target.value;
+    updateFreightTotals();
+    const row=target.closest('.nina-freight-row');
+    const hint=row?.querySelector('.nina-admin-hint');
+    if(hint)hint.textContent='A este producto le corresponde '+money((Number(freightDraft[i].total)||0)/Math.max(1,Number(freightDraft[i].units)||1))+' por unidad.';
+  }
+
   function ninaProductForm(product){
 if(galleryEditKey!==(product?.id||'new'))resetGalleryDraft(product);
+if(freightEditKey!==(product?.id||'new'))resetFreightDraft(product);
 const inv=inventory[product?.id]||{};
 return `<form id="productForm">
   <div class="pair">
@@ -876,10 +940,17 @@ return `<form id="productForm">
     <p class="nina-admin-hint">Estos valores jamás aparecen en el catálogo público. El flete y embalaje corresponden a una unidad del producto.</p>
     <div class="pair">
       <div class="field"><label>Costo de compra unitario S/</label><input type="number" id="purchaseCost" min="0" step="0.01" required value="${inv.purchase_cost??0}"></div>
-      <div class="field"><label>Flete unitario S/</label><input type="number" id="freightCost" min="0" step="0.01" required value="${inv.freight_cost??0}"></div>
+      <div class="field"><label>Flete total unitario (calculado) S/</label><input type="number" id="freightCost" readonly value="${freightUnitTotal().toFixed(2)}" title="Suma de todos los fletes divididos por sus unidades"></div>
       <div class="field"><label>Embalaje unitario S/</label><input type="number" id="packagingCost" min="0" step="0.01" required value="${inv.packaging_cost??0}"></div>
       <div class="field"><label>Alerta de stock mínimo</label><input type="number" id="minStock" min="0" step="1" required value="${inv.min_stock??2}"></div>
       ${product?'':`<div class="field"><label>Stock inicial</label><input type="number" id="initialStock" min="0" step="1" required value="0"></div>`}
+    </div>
+    <div class="nina-freight-area">
+      <div class="nina-freight-heading"><h4>Fletes del producto</h4><button class="secondary" type="button" id="addFreight">+ Agregar flete</button></div>
+      <p class="nina-admin-hint">Puedes registrar varios transportes, indicando origen, destino, agencia, costo y las unidades entre las que se distribuye cada flete.</p>
+      <div id="ninaFreightList">${freightFieldsMarkup()}</div>
+      <div class="nina-freight-total"><span>Flete total por unidad</span><strong id="freightUnitSum">${money(freightUnitTotal())}</strong></div>
+      <div class="nina-freight-total"><span>Costo total unitario estimado</span><strong id="ninaCostEstimate">${money((Number(inv.purchase_cost)||0)+freightUnitTotal()+(Number(inv.packaging_cost)||0))}</strong></div>
     </div>
     ${product?`<p class="nina-admin-hint">Stock actual: <b>${inv.stock_qty??'Sin configurar'}</b>. Para corregirlo utiliza la pestaña Inventario, que registra cada movimiento.</p>`:''}
   </div>
@@ -988,7 +1059,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
     admin = data.session?.user || null;
 
     if (admin && await checkAdmin()) {
-      adminSection='products';edit=null;resetGalleryDraft(null);
+      adminSection='products';edit=null;resetGalleryDraft(null);resetFreightDraft(null);
       await getAll();
       open(panel());
     } else {
@@ -1068,6 +1139,11 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
       const costFields = ['purchaseCost','freightCost','packagingCost'];
       const costs = costFields.map(id=>Number($(id).value));
       const minStock = Number($('minStock').value);
+      if(freightDraft.length>20)throw new Error('Se permiten hasta 20 fletes por producto.');
+      for(const x of freightDraft){
+        if(!x.origin.trim()||!x.destination.trim()||!x.carrier.trim())throw new Error('Cada flete necesita origen, destino y agencia.');
+        if(!Number.isFinite(x.total)||x.total<0||!Number.isSafeInteger(x.units)||x.units<1)throw new Error('Revisa el costo y las unidades de cada flete.');
+      }
       if(costs.some(v=>!Number.isFinite(v)||v<0)||!Number.isSafeInteger(minStock)||minStock<0)throw new Error('Revisa costos y stock mínimo.');
       const result = existing
         ? await db.from('products').update(payload).eq('id', existing.id)
@@ -1075,7 +1151,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
       if(result.error)throw result.error;
       const productId=existing?.id||result.data?.id;
       if(!productId)throw new Error('No se pudo identificar el producto creado.');
-      const inventoryData={purchase_cost:costs[0],freight_cost:costs[1],packaging_cost:costs[2],min_stock:minStock};
+      const inventoryData={purchase_cost:costs[0],freight_cost:freightUnitTotal(),freight_legs:freightDraft.map(x=>({origin:x.origin.trim(),destination:x.destination.trim(),carrier:x.carrier.trim(),total:x.total,units:x.units})),packaging_cost:costs[2],min_stock:minStock};
       const hasInventory=!!inventory[productId];
       const invResult=hasInventory
         ? await db.from('inventory_items').update(inventoryData).eq('product_id',productId)
@@ -1092,6 +1168,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
 
       edit = null;
       resetGalleryDraft(null);
+      resetFreightDraft(null);
       await getAll();
       open(panel());
       draw();
@@ -1104,6 +1181,9 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
   }
 
   async function adminClick(event) {
+    if(event.target.id==='addFreight'){if(freightDraft.length>=20){toast('Máximo 20 fletes.');return;}freightDraft.push({origin:'',destination:'',carrier:'',total:0,units:1});drawFreights();return;}
+    const removeFreight=event.target.closest('[data-freight-remove]');
+    if(removeFreight){const i=Number(removeFreight.dataset.freightRemove);if(i>=0&&i<freightDraft.length){freightDraft.splice(i,1);drawFreights();}return;}
     const view=event.target.closest('[data-gallery-view]');
     if(view){
       const p=products.find(x=>String(x.id)===$('drawerBody').dataset.galleryProduct);
@@ -1122,14 +1202,16 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
       admin = null;
       edit = null;
       resetGalleryDraft(null);
+      resetFreightDraft(null);
       open(login());
       toast('Sesión cerrada');
       return;
     }
 
     const tab=event.target.closest('[data-section]');
-    if(tab){adminSection=tab.dataset.section;edit=null;resetGalleryDraft(null);open(panel());return;}
+    if(tab){adminSection=tab.dataset.section;edit=null;resetGalleryDraft(null);resetFreightDraft(null);open(panel());return;}
     if (event.target.id === 'cancelEdit') {
+      resetFreightDraft(null);
       resetGalleryDraft(null);
       edit = null;
       open(panel());
@@ -1140,6 +1222,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
     if (editButton) {
       edit = editButton.dataset.edit;
       resetGalleryDraft(products.find(p=>String(p.id)===String(edit)));
+      resetFreightDraft(products.find(p=>String(p.id)===String(edit)));
       open(panel());
       return;
     }
@@ -1205,7 +1288,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
   });
 
   $('drawerBody').addEventListener('change',event=>{if(event.target.id==='file')onGalleryFiles(event);});
-  $('drawerBody').addEventListener('input',e=>{if(['brand','name','description','price'].includes(e.target.id))ninaUpdatePreview();});
+  $('drawerBody').addEventListener('input',e=>{if(['brand','name','description','price'].includes(e.target.id))ninaUpdatePreview();if(e.target.dataset.freightField)readFreightField(e.target);if(['purchaseCost','packagingCost'].includes(e.target.id))updateFreightTotals();});
   $('drawerBody').addEventListener('submit', adminSubmit);
   $('drawerBody').addEventListener('click', adminClick);
 
