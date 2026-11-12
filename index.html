@@ -393,6 +393,42 @@ html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!i
 @media(max-width:740px){.overlay:has(#ninaAdminRoot) .drawer{padding:55px 16px 20px}.nina-stats{grid-template-columns:1fr}.nina-admin-card{padding:13px}.nina-tabs button{flex:1}}
 
 .nina-photo-zone{padding:15px;border:2px dashed #d2bd90;background:#fffcf7;border-radius:14px;margin:15px 0}.nina-photo-zone input[type=file]{display:block;width:100%}.nina-photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px;margin:12px 0}.nina-photo-item{border:1px solid #e1d7c7;background:#fff;padding:8px;border-radius:12px}.nina-photo-item img{display:block;width:100%;height:115px;object-fit:contain;background:#f6f1eb;border-radius:8px}.nina-photo-item small{display:block;margin:5px 0;color:#716455}.nina-photo-actions{display:flex;gap:5px}.nina-photo-actions button{font-size:11px;padding:6px 8px;border:1px solid #dbcbbb;border-radius:7px;background:#fff;cursor:pointer}.nina-photo-actions button:disabled{opacity:.5}.nina-gallery-view{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}.nina-gallery-view button{width:70px;height:72px;background:#faf5ed;border:1px solid #e3d7c3;border-radius:9px;padding:5px;cursor:pointer}.nina-gallery-view button.selected{border:2px solid #ad8446}.nina-gallery-view img{width:100%;height:100%;object-fit:contain}
+
+.overlay[hidden]{display:none!important}
+.overlay.nina-full-admin{display:block;background:#f5f2ee;z-index:110;overflow:auto}
+.overlay.nina-full-admin .shade{display:none}
+.overlay.nina-full-admin .drawer{height:100%;min-height:100vh;width:100%;padding:0;border:0;box-shadow:none;background:#f5f2ee;overflow:visible}
+.overlay.nina-full-admin .close{position:fixed;right:15px;top:14px;z-index:120;border:1px solid #d7c8b2;background:#fff4df}
+.nina-dashboard-grid{min-height:100vh;display:grid;grid-template-columns:296px minmax(0,1fr);background:#f5f2ee}
+.nina-dashboard-sidebar{position:sticky;top:0;align-self:start;height:100vh;background:#171c21;color:#efefef;padding:28px 21px;box-sizing:border-box;display:flex;flex-direction:column}
+.nina-dashboard-logo{font-family:var(--serif);color:#daba80;letter-spacing:5px;font-size:37px;text-align:center;margin-bottom:42px}
+.nina-dashboard-logo small{display:block;letter-spacing:4px;font:10px sans-serif;margin-top:3px}
+.nina-dashboard-menu{display:grid;gap:12px}
+.nina-dashboard-menu button{font-size:16px;text-align:left;border:0;border-radius:12px;color:#dde1e4;background:transparent;padding:15px;cursor:pointer}
+.nina-dashboard-menu button.active{color:#ffdfa5;background:#373533}
+.nina-dashboard-menu button:disabled{opacity:.52;cursor:default}
+.nina-dashboard-menu button:hover:not(:disabled){background:#313639}
+.nina-dashboard-exit{margin-top:auto;cursor:pointer;text-align:left;border:1px solid #5b5650;color:#f4dfbe;background:transparent;padding:13px;border-radius:10px}
+.nina-dashboard-main{min-width:0;padding:30px clamp(18px,4vw,70px) 60px}
+.nina-dashboard-title{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:27px}
+.nina-dashboard-title small{font-size:12px;color:#ab7e3b;font-weight:750;letter-spacing:2px}
+.nina-dashboard-title h2{margin:6px 0!important;color:#202d3a!important;font-size:clamp(30px,3vw,45px)!important;font-family:var(--serif)}
+.nina-dashboard-title p{margin:0;color:#9d9993;font-size:13px}
+.nina-private-pill{border-radius:999px;background:#fff2dd;border:1px solid #e9d6b3;color:#805b22;padding:10px 16px;white-space:nowrap;font-size:12px}
+.nina-admin-columns{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(290px,.9fr);gap:22px;align-items:start}
+#ninaAdminRoot .nina-admin-card{background:white;border:1px solid #e9dfd5;border-radius:18px;padding:22px;margin:0 0 20px;box-shadow:0 8px 30px #31271c07}
+#ninaAdminRoot .nina-admin-card h3{font-family:var(--serif);font-size:26px;color:#29323b}
+#ninaAdminRoot .field input,#ninaAdminRoot .field textarea{background:#fcfcfc}
+.nina-demo-catalog-item{display:flex;align-items:center;gap:15px;background:#fffcf7;border:1px solid #ede0cb;border-radius:14px;padding:12px;margin:12px 0;min-height:104px}
+.nina-demo-catalog-image{width:120px;height:120px;flex-shrink:0;background:linear-gradient(130deg,#f5e8d0,#ddc595);border-radius:13px;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#806239;font-family:var(--serif);text-align:center}
+.nina-demo-catalog-image img{width:100%;height:100%;object-fit:contain}
+.nina-demo-catalog-brand{font-size:12px;color:#a98545}
+.nina-demo-catalog-name{font-size:15px;font-weight:800;color:#28313b;margin:5px 0}
+.nina-demo-catalog-desc{font-size:12px;color:#99918a;max-height:50px;overflow:hidden}
+.nina-demo-catalog-price{font-size:18px;color:#27313a;font-weight:800;margin-top:9px}
+.nina-dashboard-muted{font-size:12px;color:#897f70;line-height:1.5}
+@media(max-width:1100px){.nina-dashboard-grid{grid-template-columns:210px minmax(0,1fr)}.nina-admin-columns{grid-template-columns:1fr}.nina-dashboard-sidebar{padding:20px 12px}}
+@media(max-width:740px){.nina-dashboard-grid{display:block}.nina-dashboard-sidebar{position:relative;height:auto;padding:15px}.nina-dashboard-logo{text-align:left;font-size:25px;margin-bottom:15px}.nina-dashboard-menu{display:flex;overflow-x:auto;gap:5px;padding-bottom:7px}.nina-dashboard-menu button{font-size:12px;padding:10px;white-space:nowrap}.nina-dashboard-exit,.nina-private-pill{display:none}.nina-dashboard-main{padding:22px 15px 50px}.overlay.nina-full-admin .close{top:11px;right:11px}#ninaAdminRoot .nina-admin-card{padding:15px}}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
@@ -658,6 +694,7 @@ window.SKIN_CONFIG = {
 
   function refreshGalleryEditor(){
  const n=$("ninaGalleryPhotos");if(n)n.innerHTML=galleryEditorMarkup();
+ ninaUpdatePreview();
  const c=$("ninaGalleryCount");if(c)c.textContent=galleryDraft.length+"/5 fotografías";
 }
 
@@ -760,13 +797,16 @@ window.SKIN_CONFIG = {
 
   function open(html) {
     $('drawerBody').innerHTML = html;
+    $('overlay').classList.toggle('nina-full-admin',html.includes('id="ninaAdminRoot"'));
     delete $('drawerBody').dataset.galleryProduct;
+    ninaUpdatePreview();
     $('overlay').hidden = false;
     document.body.style.overflow = 'hidden';
   }
 
   function close() {
     $('overlay').hidden = true;
+    $('overlay').classList.remove('nina-full-admin');
     document.body.style.overflow = '';
   }
 
@@ -851,14 +891,49 @@ return `<form id="productForm">
 
   function form(product){ return ninaProductForm(product); }
 
-    function ninaPanel(){
+  
+  function ninaDashboardPreview(){
+    return `<div class="nina-admin-card">
+      <h3>Catálogo que vería el cliente</h3>
+      <div class="nina-demo-catalog-item"><div class="nina-demo-catalog-image" id="ninaPreviewImage">NINA<br>SKIN & BEAUTY</div><div>
+        <div class="nina-demo-catalog-brand" id="ninaPreviewBrand">Marca</div>
+        <div class="nina-demo-catalog-name" id="ninaPreviewName">Nombre del producto</div>
+        <div class="nina-demo-catalog-desc" id="ninaPreviewDescription">Descripción del producto</div>
+        <div class="nina-demo-catalog-price" id="ninaPreviewPrice">S/ 0.00</div>
+      </div></div>
+      ${products.filter(p=>p.active!==false).slice(0,2).map(p=>`<div class="nina-demo-catalog-item"><div class="nina-demo-catalog-image">${p.image_url?'<img src="'+esc(p.image_url)+'" loading="lazy" alt="'+esc(p.name)+'">':'NINA'}</div><div><div class="nina-demo-catalog-brand">${esc(p.brand)}</div><div class="nina-demo-catalog-name">${esc(p.name)}</div><div class="nina-demo-catalog-price">${money(p.price)}</div></div></div>`).join('')}
+      <p class="nina-dashboard-muted">El cliente verá las fotografías y el precio de venta. Los costos, fletes y ganancias son privados.</p>
+    </div>`;
+  }
+  function ninaUpdatePreview(){
+    if(!$('ninaPreviewName'))return;
+    const field=id=>$(id)?.value?.trim()||'';
+    $('ninaPreviewBrand').textContent=field('brand')||'Marca';
+    $('ninaPreviewName').textContent=field('name')||'Nombre del producto';
+    $('ninaPreviewDescription').textContent=field('description')||'Descripción del producto';
+    $('ninaPreviewPrice').textContent=money(Number(field('price'))||0);
+    const el=$('ninaPreviewImage');el.replaceChildren();
+    if(galleryDraft[0]?.url){const image=document.createElement('img');image.src=galleryDraft[0].url;image.alt='Portada';el.appendChild(image)}
+    else el.textContent='NINA SKIN & BEAUTY';
+  }
+
+  function ninaPanel(){
 const n=products.length,configured=Object.keys(inventory).length,low=products.filter(p=>inventory[p.id]&&inventory[p.id].stock_qty<=inventory[p.id].min_stock).length, editing=products.find(p=>String(p.id)===String(edit));
-return `<div id="ninaAdminRoot">
- <div class="nina-admin-heading"><div><small style="letter-spacing:2px;color:#a5874c">NINA SKIN & BEAUTY</small><h2>Gestión comercial</h2><p class="nina-admin-hint">Productos, costos e inventario privado</p></div><button class="secondary" id="logout">Cerrar sesión</button></div>
- <div class="nina-tabs"><button type="button" data-section="products" class="${adminSection==='products'?'active':''}">Productos</button><button type="button" data-section="stock" class="${adminSection==='stock'?'active':''}">Inventario</button><button type="button" data-section="reports" class="${adminSection==='reports'?'active':''}">Resumen</button></div>
- <div class="nina-stats"><div class="nina-stat"><small>Productos</small><strong>${n}</strong></div><div class="nina-stat"><small>Con inventario configurado</small><strong>${configured}</strong></div><div class="nina-stat"><small>Stock bajo</small><strong>${low}</strong></div></div>
+return `<div id="ninaAdminRoot"><div class="nina-dashboard-grid">
+ <aside class="nina-dashboard-sidebar"><div class="nina-dashboard-logo">NINA<small>SKIN & BEAUTY</small></div>
+ <nav class="nina-dashboard-menu">
+ <button type="button" data-section="reports" class="${adminSection==='reports'?'active':''}">▥ &nbsp; Resumen</button>
+ <button type="button" data-section="products" class="${adminSection==='products'?'active':''}">◈ &nbsp; Productos</button>
+ <button type="button" data-section="stock" class="${adminSection==='stock'?'active':''}">▤ &nbsp; Inventario</button>
+ <button type="button" disabled>◎ &nbsp; Ventas (próxima etapa)</button>
+ <button type="button" disabled>▣ &nbsp; Comprobantes (futuro)</button></nav>
+ <button class="nina-dashboard-exit" type="button" id="logout">Cerrar sesión</button></aside>
+ <div class="nina-dashboard-main"><div class="nina-dashboard-title"><div><small>GESTIÓN COMERCIAL</small>
+ <h2>${adminSection==='products'?'Gestión de productos':adminSection==='stock'?'Control de inventario':'Resumen del negocio'}</h2>
+ <p>Bienvenida, Jeannina · NINA Skin & Beauty</p></div><div class="nina-private-pill">◉ PANEL PRIVADO</div></div>
+ <div class="nina-stats" style="${adminSection==='products'?'display:none':''}"><div class="nina-stat"><small>Productos</small><strong>${n}</strong></div><div class="nina-stat"><small>Con inventario configurado</small><strong>${configured}</strong></div><div class="nina-stat"><small>Stock bajo</small><strong>${low}</strong></div></div>
  ${adminSection==='products'?`
-   <div class="nina-admin-card"><h3>${editing?'Editar producto':'Registrar nuevo producto'}</h3>${ninaProductForm(editing)}</div>
+   <div class="nina-admin-columns"><div><div class="nina-admin-card"><h3>${editing?'Editar producto':'Registrar producto'}</h3>${ninaProductForm(editing)}</div></div>${ninaDashboardPreview()}</div>
    <div class="nina-admin-card"><h3>Productos registrados (${n})</h3><div class="nina-table-wrap"><table class="nina-admin-table"><thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Catálogo</th><th>Acciones</th></tr></thead><tbody>${products.map(p=>`<tr><td><b>${esc(p.name)}</b><br><small>${esc(p.brand)}</small></td><td>${money(p.price)}</td><td>${inventory[p.id]?.stock_qty??'—'}</td><td><span class="nina-status ${p.active===false?'off':''}">${p.active===false?'Oculto':'Visible'}</span></td><td><button type="button" data-edit="${esc(p.id)}">Editar</button><button type="button" data-delete="${esc(p.id)}">Eliminar</button></td></tr>`).join('')}</tbody></table></div></div>`:
  adminSection==='stock'?`
    <div class="nina-admin-card"><h3>Entrada o salida de inventario</h3><p class="nina-admin-hint">Cada movimiento queda registrado. Una salida no puede dejar el stock negativo.</p>
@@ -868,7 +943,7 @@ return `<div id="ninaAdminRoot">
     <button class="action" id="stockBtn">Registrar movimiento</button></form></div>
     <div class="nina-admin-card"><h3>Movimientos recientes</h3><div class="nina-table-wrap"><table class="nina-admin-table"><thead><tr><th>Fecha</th><th>Producto</th><th>Cambio</th><th>Stock final</th><th>Motivo</th></tr></thead><tbody>${movements.map(m=>`<tr><td>${esc(new Date(m.created_at).toLocaleString('es-PE'))}</td><td>${esc(products.find(p=>p.id===m.product_id)?.name||'Producto')}</td><td>${m.quantity_change>0?'+':''}${m.quantity_change}</td><td>${m.resulting_qty}</td><td>${esc(m.reason)}</td></tr>`).join('')||'<tr><td colspan="5">Todavía no hay movimientos.</td></tr>'}</tbody></table></div></div>`:
  `<div class="nina-admin-card"><h3>Estado inicial del inventario</h3><p>Productos publicados: <b>${products.filter(p=>p.active!==false).length}</b></p><p>Productos con stock bajo: <b>${low}</b></p><p class="nina-warning">Esta versión todavía no registra ventas ni emite comprobantes SUNAT. Es el primer módulo de gestión comercial.</p></div>`}
-</div>`;
+</div></div></div>`;
 }
 
   function panel(){return ninaPanel();}
@@ -913,6 +988,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
     admin = data.session?.user || null;
 
     if (admin && await checkAdmin()) {
+      adminSection='products';edit=null;resetGalleryDraft(null);
       await getAll();
       open(panel());
     } else {
@@ -938,6 +1014,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
           throw new Error('Esta cuenta no está autorizada como administradora.');
         }
 
+        adminSection='products';edit=null;resetGalleryDraft(null);
         await getAll();
         open(panel());
         draw();
@@ -1128,6 +1205,7 @@ await ninaLoadInventory();open(ninaPanel());toast('Movimiento guardado');
   });
 
   $('drawerBody').addEventListener('change',event=>{if(event.target.id==='file')onGalleryFiles(event);});
+  $('drawerBody').addEventListener('input',e=>{if(['brand','name','description','price'].includes(e.target.id))ninaUpdatePreview();});
   $('drawerBody').addEventListener('submit', adminSubmit);
   $('drawerBody').addEventListener('click', adminClick);
 
