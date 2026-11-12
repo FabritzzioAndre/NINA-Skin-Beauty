@@ -397,7 +397,7 @@ html[data-theme="dark"] .drawer .close{background:#34404c!important;color:#fff!i
 .overlay[hidden]{display:none!important}
 .overlay.nina-full-admin{display:block;background:#f5f2ee;z-index:110;overflow:auto}
 .overlay.nina-full-admin .shade{display:none}
-.overlay.nina-full-admin .drawer{height:100%;min-height:100vh;width:100%;padding:0;border:0;box-shadow:none;background:#f5f2ee;overflow:visible}
+.overlay.nina-full-admin:has(#ninaAdminRoot) .drawer{height:100%;min-height:100vh;width:100%!important;max-width:none!important;padding:0!important;border:0;box-shadow:none;background:#f5f2ee;overflow:visible}
 .overlay.nina-full-admin .close{position:fixed;right:15px;top:14px;z-index:120;border:1px solid #d7c8b2;background:#fff4df}
 .nina-dashboard-grid{min-height:100vh;display:grid;grid-template-columns:296px minmax(0,1fr);background:#f5f2ee}
 .nina-dashboard-sidebar{position:sticky;top:0;align-self:start;height:100vh;background:#171c21;color:#efefef;padding:28px 21px;box-sizing:border-box;display:flex;flex-direction:column}
